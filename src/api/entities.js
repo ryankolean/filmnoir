@@ -265,16 +265,28 @@ export const User = {
     return true;
   },
 
+  async signInWithGoogle() {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`
+      }
+    });
+
+    if (error) throw error;
+    return data;
+  },
+
   async logout() {
     return this.signOut();
   },
 
   async login() {
-    throw new Error('Please use signIn(email, password) or implement OAuth');
+    throw new Error('Please use signIn(email, password) or signInWithGoogle()');
   },
 
   async loginWithRedirect(redirectUrl) {
-    throw new Error('Please implement OAuth or use signIn(email, password)');
+    throw new Error('Please use signIn(email, password) or signInWithGoogle()');
   },
 
   async getSession() {

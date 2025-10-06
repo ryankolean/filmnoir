@@ -1,10 +1,18 @@
 
-import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { Camera, Image, Aperture, Settings, Shield, Users } from "lucide-react";
+import { Camera, Image, Aperture, Settings, Shield, Users, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
-import { User } from "@/api/entities";
+import { useAuth } from "@/context/AuthContext";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const navigationItems = [
   { name: "Camera", url: createPageUrl("Camera"), icon: Camera },
@@ -15,18 +23,15 @@ const navigationItems = [
 
 export default function Layout({ children, currentPageName }) {
   const location = useLocation();
-  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
 
-  useEffect(() => {
-    loadUser();
-  }, []);
-
-  const loadUser = async () => {
+  const handleSignOut = async () => {
     try {
-      const currentUser = await User.me();
-      setUser(currentUser);
+      await signOut();
+      navigate(createPageUrl("Login"));
     } catch (error) {
-      console.error("Error loading user:", error);
+      console.error("Error signing out:", error);
     }
   };
 
@@ -109,23 +114,38 @@ export default function Layout({ children, currentPageName }) {
             </nav>
 
             {user && (
-              <div className="hidden md:flex items-center gap-2">
-                <div className="text-right">
-                  <p className="text-sm font-medium text-[#2C2C2C]">{user.user_metadata?.full_name || 'User'}</p>
-                  <p className="text-xs text-[#8B6F47]">{user.email}</p>
-                </div>
-                {user.user_metadata?.profile_picture ? (
-                  <img
-                    src={user.user_metadata.profile_picture}
-                    alt="Profile"
-                    className="w-10 h-10 rounded-full object-cover border-2 border-[#8B6F47]"
-                  />
-                ) : (
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#8B6F47] to-[#654321] flex items-center justify-center text-white font-medium">
-                    {user.user_metadata?.full_name?.[0] || user.email[0].toUpperCase()}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="hidden md:flex items-center gap-2 hover:bg-[#8B6F47]/10">
+                    <div className="text-right">
+                      <p className="text-sm font-medium text-[#2C2C2C]">{user.user_metadata?.full_name || 'User'}</p>
+                      <p className="text-xs text-[#8B6F47]">{user.email}</p>
+                    </div>
+                    {user.user_metadata?.profile_picture ? (
+                      <img
+                        src={user.user_metadata.profile_picture}
+                        alt="Profile"
+                        className="w-10 h-10 rounded-full object-cover border-2 border-[#8B6F47]"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#8B6F47] to-[#654321] flex items-center justify-center text-white font-medium">
+                        {user.user_metadata?.full_name?.[0] || user.email[0].toUpperCase()}
+                      </div>
+                    )}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <div className="px-2 py-1.5">
+                    <p className="text-sm font-medium text-[#2C2C2C]">{user.user_metadata?.full_name || 'User'}</p>
+                    <p className="text-xs text-[#8B6F47]">{user.email}</p>
                   </div>
-                )}
-              </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut} className="text-red-600 cursor-pointer">
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
           </div>
         </header>
