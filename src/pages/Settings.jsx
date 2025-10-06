@@ -48,16 +48,15 @@ export default function SettingsPage() {
     setIsLoading(true);
     const currentUser = await User.me();
     setUser(currentUser);
-    
-    if (currentUser.privacy_settings) {
-      setPrivacySettings(currentUser.privacy_settings);
+
+    if (currentUser?.user_metadata?.privacy_settings) {
+      setPrivacySettings(currentUser.user_metadata.privacy_settings);
     }
 
-    // Load access logs from all photos
-    const photos = await Photo.list("-created_date");
+    const photos = await Photo.list("-created_at");
     const allLogs = photos
-      .filter(p => p.access_log && p.access_log.length > 0)
-      .flatMap(p => p.access_log)
+      .filter(p => p.metadata?.access_log && p.metadata.access_log.length > 0)
+      .flatMap(p => p.metadata.access_log)
       .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
     setAccessLog(allLogs);
 

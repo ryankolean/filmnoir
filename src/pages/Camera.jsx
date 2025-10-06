@@ -156,25 +156,28 @@ export default function CameraPage() {
       }
 
       // Get default visibility from user settings
-      const defaultVisibility = user?.privacy_settings?.default_photo_visibility || "private";
-      const shouldWatermark = user?.privacy_settings?.watermark_photos || false;
-      const allowDownload = user?.privacy_settings?.allow_downloads || false;
+      const userData = await User.me();
+      const defaultVisibility = userData?.user_metadata?.privacy_settings?.default_photo_visibility || "private";
+      const shouldWatermark = userData?.user_metadata?.privacy_settings?.watermark_photos || false;
+      const allowDownload = userData?.user_metadata?.privacy_settings?.allow_downloads || false;
 
-      // Save to database with privacy settings
       await Photo.create({
-        image_url: file_url,
+        title: `Photo ${new Date().toLocaleString()}`,
+        file_url: file_url,
         thumbnail_url: file_url,
-        filter_applied: "none",
-        edited: false,
-        visibility: defaultVisibility,
-        allow_download: allowDownload,
-        has_watermark: shouldWatermark,
-        access_log: [], // Initialize access log for security and auditing
-        camera_settings: {
-          iso: "AUTO",
-          aperture: "f/2.8",
-          shutter_speed: "1/60",
-        },
+        metadata: {
+          filter_applied: "none",
+          edited: false,
+          visibility: defaultVisibility,
+          allow_download: allowDownload,
+          has_watermark: shouldWatermark,
+          access_log: [],
+          camera_settings: {
+            iso: "AUTO",
+            aperture: "f/2.8",
+            shutter_speed: "1/60",
+          }
+        }
       });
 
       setUploadProgress(100);

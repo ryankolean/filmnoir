@@ -100,7 +100,7 @@ export default function Layout({ children, currentPageName }) {
                 );
               })}
               
-              {user?.privacy_settings?.default_photo_visibility === "private" && (
+              {user?.user_metadata?.privacy_settings?.default_photo_visibility === "private" && (
                 <div className="ml-2 flex items-center gap-1 px-3 py-1.5 bg-green-100 text-green-800 rounded-full text-xs font-medium">
                   <Shield className="w-3 h-3" />
                   Secure
@@ -111,18 +111,18 @@ export default function Layout({ children, currentPageName }) {
             {user && (
               <div className="hidden md:flex items-center gap-2">
                 <div className="text-right">
-                  <p className="text-sm font-medium text-[#2C2C2C]">{user.full_name}</p>
+                  <p className="text-sm font-medium text-[#2C2C2C]">{user.user_metadata?.full_name || 'User'}</p>
                   <p className="text-xs text-[#8B6F47]">{user.email}</p>
                 </div>
-                {user.profile_picture ? (
+                {user.user_metadata?.profile_picture ? (
                   <img
-                    src={user.profile_picture}
+                    src={user.user_metadata.profile_picture}
                     alt="Profile"
                     className="w-10 h-10 rounded-full object-cover border-2 border-[#8B6F47]"
                   />
                 ) : (
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#8B6F47] to-[#654321] flex items-center justify-center text-white font-medium">
-                    {user.full_name?.[0] || user.email[0].toUpperCase()}
+                    {user.user_metadata?.full_name?.[0] || user.email[0].toUpperCase()}
                   </div>
                 )}
               </div>

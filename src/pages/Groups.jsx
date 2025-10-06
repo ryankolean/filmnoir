@@ -47,18 +47,16 @@ export default function GroupsPage() {
     try {
       const currentUser = await User.me();
       setUser(currentUser);
-      
-      const allGroups = await Group.list("-created_date");
-      
-      // Filter groups where user is a member
+
+      const allGroups = await Group.list("-created_at");
+
       const userGroups = allGroups.filter((group) =>
-        group.members?.some((member) => member.email === currentUser.email)
+        group.group_members?.some((member) => member.user_id === currentUser.id)
       );
-      
+
       setGroups(userGroups);
     } catch (error) {
       console.error("Error loading data:", error);
-      // User not authenticated
       setUser(null);
       setGroups([]);
     }
@@ -71,7 +69,7 @@ export default function GroupsPage() {
     } else if (filterType === "owned") {
       setFilteredGroups(
         groups.filter((g) =>
-          g.members?.some((m) => m.email === user?.email && m.role === "owner")
+          g.group_members?.some((m) => m.user_id === user?.id && m.role === "owner")
         )
       );
     } else {
