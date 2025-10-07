@@ -75,7 +75,7 @@ export default function SignUpPage() {
               <Aperture className="w-7 h-7 text-[#F8F6F3]" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-[#2C2C2C] tracking-tight">FilmVault</h1>
+              <h1 className="text-2xl font-bold text-[#2C2C2C] tracking-tight">Film Noir</h1>
               <p className="text-xs text-[#8B6F47]">Vintage Photography</p>
             </div>
           </div>

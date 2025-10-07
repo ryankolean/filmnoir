@@ -29,7 +29,7 @@ export default function ShareGroupModal({ group, isOpen, onClose }) {
       try {
         await navigator.share({
           title: `Join ${group.name}`,
-          text: `Join my ${group.type} '${group.name}' on FilmVault!`,
+          text: `Join my ${group.type} '${group.name}' on Film Noir!`,
           url: joinLink
         });
       } catch (error) {

@@ -58,7 +58,7 @@ export default function LoginPage() {
               <Aperture className="w-7 h-7 text-[#F8F6F3]" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-[#2C2C2C] tracking-tight">FilmVault</h1>
+              <h1 className="text-2xl font-bold text-[#2C2C2C] tracking-tight">Film Noir</h1>
               <p className="text-xs text-[#8B6F47]">Vintage Photography</p>
             </div>
           </div>
@@ -68,7 +68,7 @@ export default function LoginPage() {
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl text-center text-[#2C2C2C]">Welcome Back</CardTitle>
             <CardDescription className="text-center">
-              Sign in to your FilmVault account
+              Sign in to your Film Noir account
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

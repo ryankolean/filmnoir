@@ -143,7 +143,7 @@ export default function SettingsPage() {
                   Data Management
                 </CardTitle>
                 <CardDescription>
-                  Export and backup your FilmVault data
+                  Export and backup your Film Noir data
                 </CardDescription>
               </CardHeader>
               <CardContent>
